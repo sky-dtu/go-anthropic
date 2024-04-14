@@ -36,26 +36,18 @@ import (
 )
 
 func main() {
-    client, err := anthropic.NewClient(anthropic.Client{
-        ApiKey: "your_api_key_here",
-    })
+    // create a new client with your API key 
+    // and model [default: claude-3-opus-20240229]
+    client, err := anthropic.NewClient("your_api_key_here", "")
     if err != nil {
         log.Fatalf("Failed to create client: %v", err)
     }
 }
 ```
 
-### Creating a Message
+### Create Completion Request
 
-Create a message to send to the API:
-
-```go
-message := client.CreateMessage("user", "Hello, how are you?")
-```
-
-### Sending a Completion Request
-
-To send a completion request and receive a response, use the DoCompletionRequest function. Ensure you pass a context to manage request cancellation and timeouts.
+To send a completion request and receive a response, use the CreateCompletionRequest function. Ensure you pass a context to manage request cancellation and timeouts.
 
 ```go
 import (
@@ -67,14 +59,19 @@ func main() {
     // Assume client has been initialized as shown above
 
     // Create a completion request
-    request := anthropic.CompletionRequest{
-        Messages:  []anthropic.Message{*message},
+    request := anthropic.ChatCompletionRequest{
+        Messages:  []anthropic.ChatCompletionMessage{
+            {
+                Role: anthropic.UserRole,
+                Content: "Hello, how are you?",
+            },
+        },
         Model:     client.Model,
         MaxTokens: 150,
     }
 
     // Send the completion request
-    response, err := client.DoCompletionRequest(context.Background(), request)
+    response, err := client.CreateChatCompletion(context.Background(), request)
     if err != nil {
         log.Fatalf("Failed to send completion request: %v", err)
     }
@@ -102,23 +99,25 @@ import (
 
 func main() {
     // Create a new client
-    client, err := anthropic.NewClient(anthropic.Client{
-        ApiKey: "your_api_key_here",
-    })
+    client, err := anthropic.NewClient("your_api_key_here", "")
     if err != nil {
         log.Fatalf("Failed to create client: %v", err)
     }
 
-    // Create a message
-    message := client.CreateMessage("user", "Hello, how are you?")
-    request := anthropic.CompletionRequest{
-        Messages:  []anthropic.Message{*message},
+    // Create completion request
+    request := anthropic.CreateCompletionRequest{
+        Messages:  []anthropic.ChatCompletionMessage{
+            {
+                Role:    anthropic.UserRole,
+                Content: "Hello, how are you?",
+            },
+        },
         Model:     client.Model,
         MaxTokens: 150,
     }
 
-    // Send the completion request
-    response, err := client.DoCompletionRequest(context.Background(), request)
+    // Create the completion request
+    response, err := client.CreateCompletionRequest(context.Background(), request)
     if err != nil {
         log.Fatalf("Failed to send completion request: %v", err)
     }
