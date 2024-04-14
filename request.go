@@ -42,6 +42,23 @@ type ChatCompletionResponse struct {
 	Usage        Usage                   `json:"usage"`         // Usage information of the tokens
 }
 
+// String returns a string representation of the ChatCompletionResponse
+func (c *ChatCompletionResponse) String(del string) string {
+	if len(c.Content) == 0 {
+		return ""
+	}
+
+	if del == "" {
+		del = "\n\n"
+	}
+
+	resp := ""
+	for _, content := range c.Content {
+		resp += content.Text + del
+	}
+	return resp
+}
+
 // ChatCompletionContent represents the generated content
 type ChatCompletionContent struct {
 	Text  string      `json:"text"`  // Generated text
