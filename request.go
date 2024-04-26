@@ -57,6 +57,12 @@ func (c *ChatCompletionResponse) String(del string) string {
 	for _, content := range c.Content {
 		resp += content.Text + del
 	}
+
+	// remove the last delimiter
+	if len(resp) >= len(del) {
+		resp = resp[:len(resp)-len(del)]
+	}
+
 	return resp
 }
 
