@@ -24,6 +24,7 @@ type ChatCompletionRequest struct {
 	Messages  []ChatCompletionMessage `json:"messages"`   // List of messages to process
 	Model     string                  `json:"model"`      // Model identifier
 	MaxTokens int                     `json:"max_tokens"` // Maximum number of tokens to generate
+	System    string                  `json:"system"`     // System identifier
 }
 
 // ChatCompletionMessage represents a single interaction unit within a request
